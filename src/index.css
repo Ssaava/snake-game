@@ -12,6 +12,11 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+* {
+  padding: 0;
+  border: 0;
+  margin: 0;
+}
 
 a {
   font-weight: 500;
@@ -24,10 +29,12 @@ a:hover {
 
 body {
   margin: 0;
+  padding: 0;
   display: flex;
-  place-items: center;
-  min-width: 320px;
+  align-items: center;
+  justify-content: center;
   min-height: 100vh;
+  width: 100vw;
 }
 
 h1 {
@@ -65,4 +72,25 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+}
+
+.canvas-container {
+  position: relative;
+}
+.absolute {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.font-bold {
+  font-size: 1rem;
+  font-weight: 500;
+}
+.flex {
+  display: flex;
+}
+.flex-col {
+  flex-direction: column;
+  gap: 0.1rem;
 }
