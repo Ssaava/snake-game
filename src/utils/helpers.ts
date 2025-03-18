@@ -1,80 +1,35 @@
 import { Dispatch, SetStateAction } from "react";
 
-export const moveSnake = (
-  snake: [number, number][],
-  direction: string,
-  setSnake: Dispatch<SetStateAction<[number, number][]>>,
-  fruit: [number, number],
-  setFruit: Dispatch<SetStateAction<[number, number]>>,
-  setMegaFruit: Dispatch<SetStateAction<null | [number, number]>>,
-  setIsGameOver: Dispatch<SetStateAction<boolean>>,
-  setScore: Dispatch<SetStateAction<number>>,
-  COLS: number,
-  ROWS: number
-) => {
-  const newSnake: [number, number][] = [...snake];
-  const snakeHead: [number, number] = [...newSnake[newSnake.length - 1]] as [
-    number,
-    number
-  ];
-  switch (direction) {
-    case "up":
-      snakeHead[1] -= 1;
-      break;
-    case "down":
-      snakeHead[1] += 1;
-      break;
-    case "left":
-      snakeHead[0] -= 1;
-      break;
-    case "right":
-      snakeHead[0] += 1;
-      break;
-  }
+const COLS: number = 20;
+const ROWS: number = 20;
 
-  newSnake.push(snakeHead);
-  //   check collision and remove the tail
-  if (
-    !checkFruitCollision(
-      snakeHead,
-      fruit,
-      setFruit,
-      setMegaFruit,
-      setScore,
-      COLS,
-      ROWS
-    )
-  ) {
-    newSnake.shift();
-  }
-  setSnake(newSnake);
-  const gameOver: boolean = checkGameOver(snake, COLS, ROWS);
-  setIsGameOver(gameOver);
-};
-
-const checkFruitCollision = (
+export const checkFruitCollision = (
   snakeHead: [number, number],
   fruit: [number, number],
+  megaFruit: null | [number, number],
   setFruit: Dispatch<SetStateAction<[number, number]>>,
-  setMegaFruit: Dispatch<SetStateAction<null | [number, number]>>,
-  setScore: Dispatch<SetStateAction<number>>,
-
-  COLS: number,
-  ROWS: number
-) => {
+  setMegaFruit: Dispatch<SetStateAction<null | [number, number]>>
+): number => {
   if (snakeHead[0] === fruit[0] && snakeHead[1] === fruit[1]) {
-    generateFruit(setFruit, COLS, ROWS);
-    generateMegaFruit(setMegaFruit, COLS, ROWS);
-    setScore((prev) => (prev += 1));
-    return true;
+    generateFruit(setFruit);
+    generateMegaFruit(setMegaFruit);
+    return 1;
   }
-  return false;
+
+  if (
+    megaFruit &&
+    snakeHead[0] === megaFruit[0] &&
+    snakeHead[1] === megaFruit[1]
+  ) {
+    setMegaFruit(null);
+    return 3;
+  }
+
+  return 0;
 };
 
 const generateFruit = (
-  setFruit: Dispatch<SetStateAction<[number, number]>>,
-  COLS: number,
-  ROWS: number
+  setFruit: Dispatch<SetStateAction<[number, number]>>
 ) => {
   const newFruit: [number, number] = [
     Math.floor(Math.random() * COLS),
@@ -100,11 +55,7 @@ export const handleUserDirections = (e: { key: any }, setDirection: any) => {
   }
 };
 
-export const checkGameOver = (
-  snake: [number, number][],
-  COLS: number,
-  ROWS: number
-): boolean => {
+export const checkGameOver = (snake: [number, number][]): boolean => {
   // Check wall collision
   const snakeHead: [number, number] = snake[snake.length - 1];
   if (
@@ -125,9 +76,7 @@ export const checkGameOver = (
 };
 
 export const generateMegaFruit = (
-  setMegaFruit: Dispatch<React.SetStateAction<null | [number, number]>>,
-  COLS: number,
-  ROWS: number
+  setMegaFruit: Dispatch<React.SetStateAction<null | [number, number]>>
 ) => {
   if (Math.random() < 0.1) {
     const newMegaFruit: [number, number] = [
@@ -135,5 +84,40 @@ export const generateMegaFruit = (
       Math.floor(Math.random() * ROWS),
     ];
     setMegaFruit(newMegaFruit);
+  }
+};
+
+export const drawFruit = (
+  ctx: CanvasRenderingContext2D,
+  GRID_SIZE: number,
+  fruit: [number, number],
+  color: string = "red"
+) => {
+  ctx.fillStyle = color;
+  ctx.fillRect(
+    fruit[0] * GRID_SIZE,
+    fruit[1] * GRID_SIZE,
+    GRID_SIZE,
+    GRID_SIZE
+  );
+};
+
+export const checkCurrentDirection = (
+  snakeHead: [number, number],
+  direction: string
+) => {
+  switch (direction) {
+    case "up":
+      snakeHead[1] -= 1;
+      break;
+    case "down":
+      snakeHead[1] += 1;
+      break;
+    case "left":
+      snakeHead[0] -= 1;
+      break;
+    case "right":
+      snakeHead[0] += 1;
+      break;
   }
 };

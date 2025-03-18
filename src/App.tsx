@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import GameBoard from "./components/GameBoard";
+import { useSnakeGameContext } from "./context/useSnakeGameContext";
 
 export default function App() {
-  const [score, setScore] = useState<number>(0);
+  const { score } = useSnakeGameContext();
   const [highestScore, setHighestScore] = useState<number>(
     localStorage.getItem("highestScore")
       ? parseInt(localStorage.getItem("snakeHighScore")!)
@@ -25,7 +26,7 @@ export default function App() {
           <p className="font-bold">Highest Score: {highestScore}</p>
         </div>
 
-        <GameBoard canvasSize={800} score={score} setScore={setScore} />
+        <GameBoard canvasSize={800} />
       </div>
     </>
   );
