@@ -1,23 +1,14 @@
 import { useEffect, useRef } from "react";
 import { useSnakeGameContext } from "../context/useSnakeGameContext";
-import { drawFruit, generateMegaFruit } from "../utils/helpers";
+import { drawFruit } from "../utils/helpers";
 
 type Props = {
   canvasSize: number;
 };
 const ROWS = 20;
-const COLS = 20;
 const GameBoard = ({ canvasSize }: Props) => {
-  const {
-    snake,
-    fruit,
-    megaFruit,
-    setMegaFruit,
-    score,
-    setScore,
-    moveSnake,
-    isGameOver,
-  } = useSnakeGameContext();
+  const { snake, fruit, megaFruit, moveSnake, isGameOver } =
+    useSnakeGameContext();
 
   const canvasRef = useRef(null);
 

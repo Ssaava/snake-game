@@ -121,3 +121,15 @@ export const checkCurrentDirection = (
       break;
   }
 };
+
+export const handleHighScoreStorage = (
+  score: number,
+  highSore: number,
+  isGameOver: boolean,
+  setHighestScore: Dispatch<SetStateAction<number>>
+) => {
+  if (isGameOver && score > highSore) {
+    localStorage.setItem("highScore", score.toString());
+    setHighestScore(score);
+  }
+};

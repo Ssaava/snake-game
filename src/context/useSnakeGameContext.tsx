@@ -11,6 +11,7 @@ import {
   checkCurrentDirection,
   checkFruitCollision,
   checkGameOver,
+  handleHighScoreStorage,
   handleUserDirections,
 } from "../utils/helpers";
 
@@ -18,6 +19,7 @@ type SnakeGameContextType = {
   moveSnake: () => void;
   isGameOver: boolean;
   score: number;
+  highestScore: number;
   snake: [number, number][];
   fruit: [number, number];
   megaFruit: null | [number, number];
@@ -44,6 +46,9 @@ export const SnakeGameContext = ({ children }: { children: ReactNode }) => {
   const [fruit, setFruit] = useState<[number, number]>([5, 0]);
   const [megaFruit, setMegaFruit] = useState<null | [number, number]>(null);
   const [score, setScore] = useState<number>(0);
+  const [highestScore, setHighestScore] = useState(
+    Number(localStorage.getItem("highScore")) || 0
+  );
 
   const moveSnake = () => {
     const newSnake: [number, number][] = [...snake];
@@ -76,6 +81,7 @@ export const SnakeGameContext = ({ children }: { children: ReactNode }) => {
 
     setSnake(newSnake);
     const gameOver: boolean = checkGameOver(snake);
+    handleHighScoreStorage(score, highestScore, gameOver, setHighestScore);
     setIsGameOver(gameOver);
   };
 
@@ -96,6 +102,7 @@ export const SnakeGameContext = ({ children }: { children: ReactNode }) => {
           moveSnake: moveSnake,
           isGameOver: isGameOver,
           score: score,
+          highestScore: highestScore,
           snake: snake,
           direction: direction,
           fruit: fruit,
