@@ -30,13 +30,25 @@ a:hover {
 body {
   margin: 0;
   padding: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   min-height: 100vh;
   width: 100vw;
 }
 
+.min-h-100 {
+  min-height: 100vh;
+}
+.w-full {
+  width: 100%;
+}
+.h-full {
+  height: 100%;
+}
+.justify-center {
+  justify-content: center;
+}
+.items-center {
+  align-items: center;
+}
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
@@ -74,7 +86,7 @@ button:focus-visible {
   }
 }
 
-.canvas-container {
+.relative {
   position: relative;
 }
 .absolute {
@@ -93,4 +105,8 @@ button:focus-visible {
 .flex-col {
   flex-direction: column;
   gap: 0.1rem;
+}
+
+.game-container {
+  padding-block: 14px;
 }
