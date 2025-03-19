@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import GameBoard from "./components/GameBoard";
 import { useSnakeGameContext } from "./context/useSnakeGameContext";
 
