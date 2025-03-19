@@ -17,12 +17,14 @@ const GameBoard = ({ canvasSize }: Props) => {
 
   // @ts-ignore
   const handleTouchStart = (e) => {
+    e.preventDefault();
     const touch = e.touches[0];
     setTouchStart({ x: touch.clientX, y: touch.clientY });
   };
 
   // @ts-ignore
   const handleTouchMove = (e) => {
+    e.preventDefault();
     if (!touchStart) return;
 
     const touch = e.touches[0];
