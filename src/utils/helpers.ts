@@ -221,22 +221,27 @@ export const drawSnake = (
       }
       ctx.fill();
 
-      // Draw the tongue
-      ctx.strokeStyle = "red";
-      ctx.lineWidth = 1;
-      ctx.beginPath();
+      // Draw a forked tongue
       if (direction === "up") {
-        ctx.moveTo(headX, headY + GRID_SIZE / 4); // Base of the tongue
-        ctx.lineTo(headX, headY + GRID_SIZE / 2); // Tip of the tongue
+        ctx.moveTo(headX - 2, headY - GRID_SIZE / 4); // Left base of the tongue
+        ctx.lineTo(headX - 2, headY - GRID_SIZE / 2); // Left tip of the tongue
+        ctx.moveTo(headX + 2, headY - GRID_SIZE / 4); // Right base of the tongue
+        ctx.lineTo(headX + 2, headY - GRID_SIZE / 2); // Right tip of the tongue
       } else if (direction === "down") {
-        ctx.moveTo(headX, headY - GRID_SIZE / 4);
-        ctx.lineTo(headX, headY - GRID_SIZE / 2);
+        ctx.moveTo(headX - 2, headY + GRID_SIZE / 4); // Left base of the tongue
+        ctx.lineTo(headX - 2, headY + GRID_SIZE / 2); // Left tip of the tongue
+        ctx.moveTo(headX + 2, headY + GRID_SIZE / 4); // Right base of the tongue
+        ctx.lineTo(headX + 2, headY + GRID_SIZE / 2); // Right tip of the tongue
       } else if (direction === "left") {
-        ctx.moveTo(headX + GRID_SIZE / 4, headY);
-        ctx.lineTo(headX + GRID_SIZE / 2, headY);
+        ctx.moveTo(headX - GRID_SIZE / 4, headY - 2); // Top base of the tongue
+        ctx.lineTo(headX - GRID_SIZE / 2, headY - 2); // Top tip of the tongue
+        ctx.moveTo(headX - GRID_SIZE / 4, headY + 2); // Bottom base of the tongue
+        ctx.lineTo(headX - GRID_SIZE / 2, headY + 2); // Bottom tip of the tongue
       } else if (direction === "right") {
-        ctx.moveTo(headX - GRID_SIZE / 4, headY);
-        ctx.lineTo(headX - GRID_SIZE / 2, headY);
+        ctx.moveTo(headX + GRID_SIZE / 4, headY - 2); // Top base of the tongue
+        ctx.lineTo(headX + GRID_SIZE / 2, headY - 2); // Top tip of the tongue
+        ctx.moveTo(headX + GRID_SIZE / 4, headY + 2); // Bottom base of the tongue
+        ctx.lineTo(headX + GRID_SIZE / 2, headY + 2); // Bottom tip of the tongue
       }
       ctx.stroke();
     } else {
