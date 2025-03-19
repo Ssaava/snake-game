@@ -125,27 +125,8 @@ export const drawFruit = (
   );
 };
 
-export const checkCurrentDirection = (
-  snakeHead: [number, number],
-  direction: string
-) => {
-  switch (direction) {
-    case "up":
-      snakeHead[1] -= 1;
-      break;
-    case "down":
-      snakeHead[1] += 1;
-      break;
-    case "left":
-      snakeHead[0] -= 1;
-      break;
-    case "right":
-      snakeHead[0] += 1;
-      break;
-  }
-};
-
-export const handleHighScoreStorage = (
+export const handleProgressStorage = (
+  snake: [number, number][],
   score: number,
   highSore: number,
   isGameOver: boolean,
@@ -155,6 +136,7 @@ export const handleHighScoreStorage = (
     localStorage.setItem("highScore", score.toString());
     setHighestScore(score);
   }
+  localStorage.setItem("snake", JSON.stringify(snake));
 };
 
 export const drawSnake = (

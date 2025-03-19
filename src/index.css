@@ -16,6 +16,7 @@
   padding: 0;
   border: 0;
   margin: 0;
+  box-sizing: border-box;
 }
 
 a {
@@ -27,21 +28,63 @@ a:hover {
   color: #535bf2;
 }
 
-body {
-  margin: 0;
-  padding: 0;
-  min-height: 100vh;
-  width: 100vw;
+.bg-blur {
+  background: rgba(0, 0, 0, 0.15);
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(0, 0, 0, 0.075);
 }
-
-.min-h-100 {
+.settings {
+  padding: 1rem;
+  border-radius: 1rem;
+  background-color: rgba(255, 255, 255, 0.1);
+  max-width: 40rem;
+  width: 100%;
+}
+.min-h-screen {
   min-height: 100vh;
+}
+.border {
+  border: 1px solid;
+}
+.text-center {
+  text-align: center;
+}
+.font-bold {
+  font-weight: 700;
+}
+.font-medium {
+  font-weight: medium;
+}
+.gap-4 {
+  gap: 1rem;
+}
+.p-6 {
+  padding: 6px;
+}
+.bg-red-500 {
+  background-color: red;
 }
 .w-full {
   width: 100%;
 }
+.w-fit {
+  width: fit-content;
+}
+.mx-auto {
+  margin-inline: auto;
+}
+.my-auto {
+  margin-block-start: auto;
+}
 .h-full {
   height: 100%;
+}
+.w-screen {
+  width: 100vh;
+}
+.h-screen {
+  height: 100vh;
 }
 .justify-center {
   justify-content: center;
@@ -91,8 +134,24 @@ button:focus-visible {
 }
 .absolute {
   position: absolute;
+}
+.top-0 {
   top: 0;
+}
+.right-0 {
   right: 0;
+}
+.left-0 {
+  left: 0;
+}
+.bottom {
+  bottom: 0;
+}
+.z-10 {
+  z-index: 10;
+}
+.z-50 {
+  z-index: 50;
 }
 
 .font-bold {
@@ -104,9 +163,10 @@ button:focus-visible {
 }
 .flex-col {
   flex-direction: column;
-  gap: 0.1rem;
 }
-
+.flex-wrap {
+  flex-wrap: wrap;
+}
 .game-container {
   padding-block: 14px;
 }

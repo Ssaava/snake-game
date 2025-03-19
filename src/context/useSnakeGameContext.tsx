@@ -8,10 +8,9 @@ import {
   useState,
 } from "react";
 import {
-  checkCurrentDirection,
   checkFruitCollision,
   checkGameOver,
-  handleHighScoreStorage,
+  handleProgressStorage,
   handleUserDirections,
 } from "../utils/helpers";
 
@@ -29,6 +28,7 @@ type SnakeGameContextType = {
   setScore: Dispatch<SetStateAction<number>>;
   setFruit: Dispatch<SetStateAction<[number, number]>>;
   setMegaFruit: Dispatch<SetStateAction<null | [number, number]>>;
+  setIsGameOver: Dispatch<SetStateAction<boolean>>;
 };
 
 const SnakeGameContextProvider = createContext<SnakeGameContextType>(
@@ -36,13 +36,17 @@ const SnakeGameContextProvider = createContext<SnakeGameContextType>(
 );
 
 export const SnakeGameContext = ({ children }: { children: ReactNode }) => {
-  const [snake, setSnake] = useState<[number, number][]>([
-    [0, 0],
-    [1, 0],
-    [2, 0],
-  ]);
+  const [snake, setSnake] = useState<[number, number][]>(
+    localStorage.getItem("snake")
+      ? JSON.parse(localStorage.getItem("snake") || "[]")
+      : [
+          [0, 0],
+          [1, 0],
+          [2, 0],
+        ]
+  );
   const [direction, setDirection] = useState("right");
-  const [isGameOver, setIsGameOver] = useState(false);
+  const [isGameOver, setIsGameOver] = useState(true);
   const [fruit, setFruit] = useState<[number, number]>([5, 0]);
   const [megaFruit, setMegaFruit] = useState<null | [number, number]>(null);
   const [score, setScore] = useState<number>(0);
@@ -57,7 +61,20 @@ export const SnakeGameContext = ({ children }: { children: ReactNode }) => {
       number
     ];
 
-    checkCurrentDirection(snakeHead, direction);
+    switch (direction) {
+      case "up":
+        snakeHead[1] -= 1;
+        break;
+      case "down":
+        snakeHead[1] += 1;
+        break;
+      case "left":
+        snakeHead[0] -= 1;
+        break;
+      case "right":
+        snakeHead[0] += 1;
+        break;
+    }
     const snakeGrowth = checkFruitCollision(
       snakeHead,
       fruit,
@@ -69,6 +86,7 @@ export const SnakeGameContext = ({ children }: { children: ReactNode }) => {
     newSnake.push(snakeHead);
     const gameOver: boolean = checkGameOver(newSnake);
     if (gameOver) {
+      localStorage.removeItem("snake");
       setIsGameOver(gameOver);
       return;
     }
@@ -85,7 +103,13 @@ export const SnakeGameContext = ({ children }: { children: ReactNode }) => {
     }
 
     setSnake(newSnake);
-    handleHighScoreStorage(score, highestScore, gameOver, setHighestScore);
+    handleProgressStorage(
+      snake,
+      score,
+      highestScore,
+      gameOver,
+      setHighestScore
+    );
   };
 
   // handle user directions
@@ -115,6 +139,7 @@ export const SnakeGameContext = ({ children }: { children: ReactNode }) => {
           setScore: setScore,
           setFruit: setFruit,
           setMegaFruit: setMegaFruit,
+          setIsGameOver: setIsGameOver,
         }}
       >
         {children}
@@ -122,7 +147,6 @@ export const SnakeGameContext = ({ children }: { children: ReactNode }) => {
     </>
   );
 };
-
 export const useSnakeGameContext = () => {
   return useContext(SnakeGameContextProvider);
 };
