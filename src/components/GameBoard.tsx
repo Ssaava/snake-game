@@ -1,18 +1,50 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSnakeGameContext } from "../context/useSnakeGameContext";
-import { drawFruit } from "../utils/helpers";
+import { drawFruit, handleUserDirections } from "../utils/helpers";
 
 type Props = {
   canvasSize: number;
 };
 const ROWS = 20;
 const GameBoard = ({ canvasSize }: Props) => {
-  const { snake, fruit, megaFruit, moveSnake, isGameOver } =
+  const { snake, fruit, megaFruit, moveSnake, isGameOver, setDirection } =
     useSnakeGameContext();
+  const [touchStart, setTouchStart] = useState({ x: 0, y: 0 });
 
   const canvasRef = useRef(null);
 
   const GRID_SIZE = canvasSize / ROWS;
+
+  // @ts-ignore
+  const handleTouchStart = (e) => {
+    const touch = e.touches[0];
+    setTouchStart({ x: touch.clientX, y: touch.clientY });
+  };
+
+  // @ts-ignore
+  const handleTouchMove = (e) => {
+    if (!touchStart) return;
+
+    const touch = e.touches[0];
+    const deltaX = touch.clientX - touchStart.x;
+    const deltaY = touch.clientY - touchStart.y;
+
+    if (Math.abs(deltaX) > Math.abs(deltaY)) {
+      if (deltaX > 0) {
+        handleUserDirections({ direction: "right" }, setDirection);
+      } else {
+        handleUserDirections({ direction: "left" }, setDirection);
+      }
+    } else {
+      if (deltaY > 0) {
+        handleUserDirections({ direction: "down" }, setDirection);
+      } else {
+        handleUserDirections({ direction: "up" }, setDirection);
+      }
+    }
+
+    setTouchStart({ x: touch.clientX, y: touch.clientY });
+  };
 
   useEffect(() => {
     const canvas = canvasRef.current as unknown as HTMLCanvasElement;
@@ -45,6 +77,8 @@ const GameBoard = ({ canvasSize }: Props) => {
 
   return (
     <canvas
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
       ref={canvasRef}
       style={{ border: "1px solid black", padding: "2px" }}
     />

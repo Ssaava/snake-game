@@ -38,18 +38,27 @@ const generateFruit = (
   setFruit(newFruit);
 };
 
-export const handleUserDirections = (e: { key: any }, setDirection: any) => {
-  switch (e.key.toLowerCase()) {
+export const handleUserDirections = (
+  input: { key?: string; direction?: string },
+  setDirection: Dispatch<SetStateAction<string>>
+) => {
+  const directionInput = input.key?.toLowerCase() || input.direction;
+
+  switch (directionInput) {
     case "arrowup":
+    case "up":
       setDirection("up");
       break;
     case "arrowdown":
+    case "down":
       setDirection("down");
       break;
     case "arrowleft":
+    case "left":
       setDirection("left");
       break;
     case "arrowright":
+    case "right":
       setDirection("right");
       break;
     case "w":
