@@ -156,3 +156,109 @@ export const handleHighScoreStorage = (
     setHighestScore(score);
   }
 };
+
+export const drawSnake = (
+  snake: [number, number][],
+  ctx: CanvasRenderingContext2D,
+  GRID_SIZE: number
+) => {
+  snake.forEach(([x, y], index) => {
+    if (index === snake.length - 1) {
+      const direction = getSnakeDirection(snake);
+      const headX = x * GRID_SIZE + GRID_SIZE / 2;
+      const headY = y * GRID_SIZE + GRID_SIZE / 2;
+
+      ctx.fillStyle = "green";
+      ctx.strokeStyle = "darkgreen";
+      ctx.lineWidth = 2;
+
+      ctx.beginPath();
+      ctx.ellipse(
+        headX,
+        headY,
+        GRID_SIZE / 2, // Horizontal radius
+        GRID_SIZE / 3, // Vertical radius
+        0, // Rotation
+        0,
+        Math.PI * 2
+      );
+      ctx.fill();
+      ctx.stroke();
+
+      // Draw the eyes
+      ctx.fillStyle = "white";
+      ctx.beginPath();
+      if (direction === "up" || direction === "down") {
+        ctx.arc(
+          headX - GRID_SIZE / 4,
+          headY - GRID_SIZE / 6,
+          2,
+          0,
+          Math.PI * 2
+        ); // Left eye
+        ctx.arc(
+          headX + GRID_SIZE / 4,
+          headY - GRID_SIZE / 6,
+          2,
+          0,
+          Math.PI * 2
+        );
+      } else {
+        ctx.arc(
+          headX - GRID_SIZE / 6,
+          headY - GRID_SIZE / 4,
+          2,
+          0,
+          Math.PI * 2
+        );
+        ctx.arc(
+          headX - GRID_SIZE / 6,
+          headY + GRID_SIZE / 4,
+          2,
+          0,
+          Math.PI * 2
+        );
+      }
+      ctx.fill();
+
+      // Draw the tongue
+      ctx.strokeStyle = "red";
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      if (direction === "up") {
+        ctx.moveTo(headX, headY + GRID_SIZE / 4); // Base of the tongue
+        ctx.lineTo(headX, headY + GRID_SIZE / 2); // Tip of the tongue
+      } else if (direction === "down") {
+        ctx.moveTo(headX, headY - GRID_SIZE / 4);
+        ctx.lineTo(headX, headY - GRID_SIZE / 2);
+      } else if (direction === "left") {
+        ctx.moveTo(headX + GRID_SIZE / 4, headY);
+        ctx.lineTo(headX + GRID_SIZE / 2, headY);
+      } else if (direction === "right") {
+        ctx.moveTo(headX - GRID_SIZE / 4, headY);
+        ctx.lineTo(headX - GRID_SIZE / 2, headY);
+      }
+      ctx.stroke();
+    } else {
+      ctx.fillStyle = "green";
+      ctx.fillRect(x * GRID_SIZE, y * GRID_SIZE, GRID_SIZE - 2, GRID_SIZE - 2);
+    }
+  });
+};
+
+export const getSnakeDirection = (snake: number[][]) => {
+  const head = snake[snake.length - 1];
+  const secondSegment = snake[snake.length - 2];
+
+  if (!secondSegment) return "right";
+
+  const deltaX = head[0] - secondSegment[0];
+  const deltaY = head[1] - secondSegment[1];
+
+  if (deltaX === 1) return "right";
+  if (deltaX === -1) return "left";
+  if (deltaY === 1) return "down";
+  if (deltaY === -1) return "up";
+
+  return "right";
+};

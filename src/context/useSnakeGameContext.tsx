@@ -67,6 +67,11 @@ export const SnakeGameContext = ({ children }: { children: ReactNode }) => {
     );
 
     newSnake.push(snakeHead);
+    const gameOver: boolean = checkGameOver(newSnake);
+    if (gameOver) {
+      setIsGameOver(gameOver);
+      return;
+    }
 
     if (snakeGrowth === 0) {
       newSnake.shift();
@@ -80,9 +85,7 @@ export const SnakeGameContext = ({ children }: { children: ReactNode }) => {
     }
 
     setSnake(newSnake);
-    const gameOver: boolean = checkGameOver(snake);
     handleHighScoreStorage(score, highestScore, gameOver, setHighestScore);
-    setIsGameOver(gameOver);
   };
 
   // handle user directions

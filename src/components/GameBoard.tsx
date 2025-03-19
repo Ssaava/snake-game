@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useSnakeGameContext } from "../context/useSnakeGameContext";
-import { drawFruit, handleUserDirections } from "../utils/helpers";
+import { drawFruit, drawSnake, handleUserDirections } from "../utils/helpers";
 
 type Props = {
   canvasSize: number;
@@ -68,10 +68,9 @@ const GameBoard = ({ canvasSize }: Props) => {
         moveSnake();
       }
     }, 200);
-    snake.forEach(([x, y]) => {
-      ctx.fillStyle = "green";
-      ctx.fillRect(x * GRID_SIZE, y * GRID_SIZE, GRID_SIZE, GRID_SIZE);
-    });
+
+    drawSnake(snake, ctx, GRID_SIZE);
+
     return () => clearInterval(gameLoop);
   }, [snake, isGameOver]);
 
