@@ -12,7 +12,7 @@ export default function App() {
     setDirection,
     setFruit,
   } = useSnakeGameContext();
-  const [canvasSize, setCanvasSize] = useState(800);
+  const canvasSize = Math.min(Math.max(window.innerWidth * 0.9, 300), 800);
 
   const handleStartGame = () => {
     setIsGameOver(false);
@@ -24,15 +24,6 @@ export default function App() {
     setDirection("right");
     setFruit([5, 0]);
   };
-
-  useEffect(() => {
-    const adjustCanvasSize = () => {
-      setCanvasSize(Math.min(Math.max(window.innerWidth * 0.9, 300), 800));
-    };
-    adjustCanvasSize();
-    window.addEventListener("resize", adjustCanvasSize);
-    return () => window.removeEventListener("resize", adjustCanvasSize);
-  }, []);
 
   return (
     <>
@@ -62,12 +53,16 @@ export default function App() {
 
       {isGameOver && (
         <>
-          <div className="absolute top-0 right-0 bottom-0 left-0 z-10 min-w-screen min-h-screen flex items-center justify-center bg-blur">
+          <div
+            className={`absolute top-0 right-0 px-4 bottom-0 left-0 z-10 min-w-screen min-h-screen ${
+              canvasSize < 600 ? "pt-6" : "flex items-center justify-center"
+            } bg-blur`}
+          >
             <div className="border text-center flex flex-col gap-4 settings">
               <h1 className="text-center"> Snake Game</h1>
               <p className="font-bold">Highest Score: {highestScore}</p>
 
-              <div className="flex gap-4 items-center w-fit mx-auto ">
+              <div className="flex flex-wrap gap-4 items-center w-fit mx-auto ">
                 <button type="button" onClick={handleStartGame}>
                   Start Game
                 </button>

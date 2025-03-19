@@ -79,7 +79,8 @@ const GameBoard = ({ canvasSize }: Props) => {
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       ref={canvasRef}
-      style={{ border: "1px solid black", padding: "2px" }}
+      style={{ border: "1px solid black", padding: "2px", touchAction: "none" }}
+      tabIndex={0}
     />
   );
 };
