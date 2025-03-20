@@ -10,6 +10,7 @@ import {
 import {
   checkFruitCollision,
   checkGameOver,
+  clearStorage,
   handleProgressStorage,
   handleUserDirections,
 } from "../utils/helpers";
@@ -17,6 +18,7 @@ import {
 type SnakeGameContextType = {
   moveSnake: () => void;
   isGameOver: boolean;
+  gameOver: boolean;
   isGamePaused: boolean;
   score: number;
   highestScore: number;
@@ -77,6 +79,8 @@ export const SnakeGameContext = ({ children }: { children: ReactNode }) => {
     Number(localStorage.getItem("highScore")) || 0
   );
 
+  const [gameOver, setGameOver] = useState<boolean>(false);
+
   const moveSnake = () => {
     const newSnake: [number, number][] = [...snake];
     const snakeHead: [number, number] = [...newSnake[newSnake.length - 1]] as [
@@ -110,6 +114,7 @@ export const SnakeGameContext = ({ children }: { children: ReactNode }) => {
     const gameOver: boolean = checkGameOver(newSnake);
     if (gameOver) {
       localStorage.removeItem("snake");
+      setGameOver(gameOver);
       setIsGameOver(gameOver);
       return;
     }
@@ -143,18 +148,12 @@ export const SnakeGameContext = ({ children }: { children: ReactNode }) => {
       setHighestScore
     );
 
+    // clear the localStorage only is game is over
     if (isGameOver) {
-      localStorage.removeItem("snake");
-      localStorage.removeItem("snake-direction");
-      localStorage.removeItem("snake-fruit");
-      localStorage.removeItem("snake-mega-fruit");
-      localStorage.removeItem("snake-score");
-      localStorage.removeItem("snake-game-over");
-      localStorage.removeItem("snake-game-paused");
+      clearStorage();
     }
   }, [score, isGameOver, isGamePaused]);
 
-  // handle user directions
   useEffect(() => {
     window.addEventListener("keydown", (e) =>
       handleUserDirections(e, setDirection)
@@ -170,6 +169,7 @@ export const SnakeGameContext = ({ children }: { children: ReactNode }) => {
         value={{
           moveSnake: moveSnake,
           isGameOver: isGameOver,
+          gameOver: gameOver,
           isGamePaused: isGamePaused,
           score: score,
           highestScore: highestScore,

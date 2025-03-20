@@ -1,4 +1,5 @@
 import { useSnakeGameContext } from "../context/useSnakeGameContext";
+import { checkGameOver, clearStorage } from "../utils/helpers";
 
 type Props = {
   canvasSize: number;
@@ -10,6 +11,7 @@ const GameStart = ({ canvasSize, handlePauseGame }: Props) => {
     isGamePaused,
     setIsGameOver,
     setSnake,
+    gameOver,
     setDirection,
     setFruit,
     setMegaFruit,
@@ -28,6 +30,7 @@ const GameStart = ({ canvasSize, handlePauseGame }: Props) => {
     setDirection("right");
     setFruit([5, 0]);
     setMegaFruit(null);
+    clearStorage();
   };
 
   return (
@@ -38,8 +41,8 @@ const GameStart = ({ canvasSize, handlePauseGame }: Props) => {
     >
       <div className="border text-center flex flex-col gap-4 settings">
         <h1 className="text-center"> Snake Game</h1>
-        {isGamePaused && <h1 className="text-center"> Game is Paused</h1>}
-
+        {isGamePaused && <h2 className="text-center"> Game is Paused</h2>}
+        {gameOver && <h2 className="text-red-500 text-center"> Game Over</h2>}
         <p className="font-bold">Highest Score: {highestScore}</p>
 
         <div className="flex flex-wrap gap-4 items-center w-fit mx-auto ">

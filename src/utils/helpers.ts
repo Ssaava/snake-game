@@ -141,13 +141,25 @@ export const handleProgressStorage = (
     setHighestScore(score);
   }
 
-  localStorage.setItem("snake", JSON.stringify(snake));
-  localStorage.setItem("snake-direction", direction);
-  localStorage.setItem("snake-fruit", JSON.stringify(fruit));
-  localStorage.setItem("snake-mega-fruit", JSON.stringify(megaFruit));
-  localStorage.setItem("snake-score", JSON.stringify(score));
-  localStorage.setItem("snake-game-over", JSON.stringify(isGameOver));
-  localStorage.setItem("snake-game-paused", JSON.stringify(isGamePaused));
+  if (isGamePaused) {
+    localStorage.setItem("snake", JSON.stringify(snake));
+    localStorage.setItem("snake-direction", direction);
+    localStorage.setItem("snake-fruit", JSON.stringify(fruit));
+    localStorage.setItem("snake-mega-fruit", JSON.stringify(megaFruit));
+    localStorage.setItem("snake-score", JSON.stringify(score));
+    localStorage.setItem("snake-game-over", JSON.stringify(isGameOver));
+    localStorage.setItem("snake-game-paused", JSON.stringify(isGamePaused));
+  }
+};
+
+export const clearStorage = () => {
+  localStorage.removeItem("snake");
+  localStorage.removeItem("snake-direction");
+  localStorage.removeItem("snake-fruit");
+  localStorage.removeItem("snake-mega-fruit");
+  localStorage.removeItem("snake-score");
+  localStorage.removeItem("snake-game-over");
+  localStorage.removeItem("snake-game-paused");
 };
 
 export const drawSnake = (
