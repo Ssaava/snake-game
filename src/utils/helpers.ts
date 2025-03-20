@@ -127,16 +127,27 @@ export const drawFruit = (
 
 export const handleProgressStorage = (
   snake: [number, number][],
+  fruit: [number, number],
+  megaFruit: [number, number] | null,
   score: number,
   highSore: number,
   isGameOver: boolean,
+  direction: string,
+  isGamePaused: boolean,
   setHighestScore: Dispatch<SetStateAction<number>>
 ) => {
   if (isGameOver && score > highSore) {
     localStorage.setItem("highScore", score.toString());
     setHighestScore(score);
   }
+
   localStorage.setItem("snake", JSON.stringify(snake));
+  localStorage.setItem("snake-direction", direction);
+  localStorage.setItem("snake-fruit", JSON.stringify(fruit));
+  localStorage.setItem("snake-mega-fruit", JSON.stringify(megaFruit));
+  localStorage.setItem("snake-score", JSON.stringify(score));
+  localStorage.setItem("snake-game-over", JSON.stringify(isGameOver));
+  localStorage.setItem("snake-game-paused", JSON.stringify(isGamePaused));
 };
 
 export const drawSnake = (

@@ -7,8 +7,15 @@ type Props = {
 };
 const ROWS = 20;
 const GameBoard = ({ canvasSize }: Props) => {
-  const { snake, fruit, megaFruit, moveSnake, isGameOver, setDirection } =
-    useSnakeGameContext();
+  const {
+    snake,
+    fruit,
+    megaFruit,
+    moveSnake,
+    isGameOver,
+    isGamePaused,
+    setDirection,
+  } = useSnakeGameContext();
   const [touchStart, setTouchStart] = useState({ x: 0, y: 0 });
 
   const canvasRef = useRef(null);
@@ -67,7 +74,7 @@ const GameBoard = ({ canvasSize }: Props) => {
 
     const gameLoop = setInterval(() => {
       if (!isGameOver) {
-        moveSnake();
+        !isGamePaused && moveSnake();
       }
     }, 200);
 

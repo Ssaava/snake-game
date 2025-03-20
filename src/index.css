@@ -146,6 +146,9 @@ button:focus-visible {
 .top-0 {
   top: 0;
 }
+.-top-10 {
+  top: -3rem;
+}
 .right-0 {
   right: 0;
 }
