@@ -1,5 +1,5 @@
 import { useSnakeGameContext } from "../context/useSnakeGameContext";
-import { checkGameOver, clearStorage } from "../utils/helpers";
+import { clearStorage } from "../utils/helpers";
 
 type Props = {
   canvasSize: number;
