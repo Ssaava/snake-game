@@ -11,6 +11,7 @@ const GameBoard = ({ canvasSize }: Props) => {
     snake,
     fruit,
     megaFruit,
+    direction,
     moveSnake,
     isGameOver,
     isGamePaused,
@@ -40,15 +41,15 @@ const GameBoard = ({ canvasSize }: Props) => {
 
     if (Math.abs(deltaX) > Math.abs(deltaY)) {
       if (deltaX > 0) {
-        handleUserDirections({ direction: "right" }, setDirection);
+        handleUserDirections({ direction: "right" }, direction, setDirection);
       } else {
-        handleUserDirections({ direction: "left" }, setDirection);
+        handleUserDirections({ direction: "left" }, direction, setDirection);
       }
     } else {
       if (deltaY > 0) {
-        handleUserDirections({ direction: "down" }, setDirection);
+        handleUserDirections({ direction: "down" }, direction, setDirection);
       } else {
-        handleUserDirections({ direction: "up" }, setDirection);
+        handleUserDirections({ direction: "up" }, direction, setDirection);
       }
     }
 

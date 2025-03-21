@@ -37,44 +37,72 @@ const generateFruit = (
   ];
   setFruit(newFruit);
 };
-
 export const handleUserDirections = (
   input: { key?: string; direction?: string },
+  direction: string,
   setDirection: Dispatch<SetStateAction<string>>
 ) => {
   const directionInput = input.key?.toLowerCase() || input.direction;
 
+  // Mapping of opposite directions
+  const oppositeDirections: { [key: string]: string } = {
+    up: "down",
+    down: "up",
+    left: "right",
+    right: "left",
+  };
+
+  // Get the new direction based on input
+  let newDirection = direction;
+
   switch (directionInput) {
     case "arrowup":
     case "up":
-      setDirection("up");
+      newDirection = "up";
       break;
     case "arrowdown":
     case "down":
-      setDirection("down");
+      newDirection = "down";
       break;
     case "arrowleft":
     case "left":
-      setDirection("left");
+      newDirection = "left";
       break;
     case "arrowright":
     case "right":
-      setDirection("right");
+      newDirection = "right";
       break;
     case "w":
-      setDirection("up");
+      newDirection = "up";
       break;
     case "s":
-      setDirection("down");
+      newDirection = "down";
       break;
     case "a":
-      setDirection("left");
+      newDirection = "left";
       break;
     case "d":
-      setDirection("right");
+      newDirection = "right";
       break;
     default:
       break;
+  }
+
+  console.log(
+    "Snake New Direction: ",
+    newDirection,
+    " : ",
+    direction,
+    " : ",
+    oppositeDirections[direction]
+  );
+
+  // Prevent the snake from moving in the opposite direction or updating unnecessarily
+  if (
+    newDirection !== oppositeDirections[direction] &&
+    newDirection !== direction
+  ) {
+    setDirection(newDirection);
   }
 };
 

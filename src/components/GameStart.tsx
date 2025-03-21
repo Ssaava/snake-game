@@ -19,7 +19,6 @@ const GameStart = ({ canvasSize, handlePauseGame }: Props) => {
   } = useSnakeGameContext();
 
   const handleStartGame = () => {
-    console.log(localStorage.getItem("snake-game-paused"));
     setIsGameOver(false);
     setIsGamePaused(false);
     setSnake([

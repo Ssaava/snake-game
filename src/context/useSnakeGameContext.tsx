@@ -5,6 +5,7 @@ import {
   SetStateAction,
   useContext,
   useEffect,
+  useRef,
   useState,
 } from "react";
 import {
@@ -80,7 +81,7 @@ export const SnakeGameContext = ({ children }: { children: ReactNode }) => {
   );
 
   const [gameOver, setGameOver] = useState<boolean>(false);
-
+  const isKeyPressed = useRef(false);
   const moveSnake = () => {
     const newSnake: [number, number][] = [...snake];
     const snakeHead: [number, number] = [...newSnake[newSnake.length - 1]] as [
@@ -113,9 +114,9 @@ export const SnakeGameContext = ({ children }: { children: ReactNode }) => {
     newSnake.push(snakeHead);
     const gameOver: boolean = checkGameOver(newSnake);
     if (gameOver) {
-      localStorage.removeItem("snake");
       setGameOver(gameOver);
       setIsGameOver(gameOver);
+      clearStorage();
       return;
     }
 
@@ -133,8 +134,6 @@ export const SnakeGameContext = ({ children }: { children: ReactNode }) => {
     setSnake(newSnake);
   };
 
-  console.log("IsGame Paused: ", isGamePaused);
-
   useEffect(() => {
     handleProgressStorage(
       snake,
@@ -147,22 +146,30 @@ export const SnakeGameContext = ({ children }: { children: ReactNode }) => {
       isGamePaused,
       setHighestScore
     );
-
-    // clear the localStorage only is game is over
     if (isGameOver) {
       clearStorage();
     }
   }, [score, isGameOver, isGamePaused]);
 
   useEffect(() => {
-    window.addEventListener("keydown", (e) =>
-      handleUserDirections(e, setDirection)
-    );
-    return () =>
-      window.removeEventListener("keydown", (e) =>
-        handleUserDirections(e, setDirection)
-      );
-  }, []);
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (!isKeyPressed.current) {
+        isKeyPressed.current = true;
+        handleUserDirections({ key: e.key }, direction, setDirection);
+      }
+    };
+
+    const handleKeyUp = () => {
+      isKeyPressed.current = false;
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("keyup", handleKeyUp);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("keyup", handleKeyUp);
+    };
+  }, [direction]);
   return (
     <>
       <SnakeGameContextProvider.Provider
